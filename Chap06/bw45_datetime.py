@@ -32,20 +32,22 @@ print(utc_now)
 
 # 단점은 tzinfo 클래스와 관련 메스드를 이용한 시간대 변환 기능만 제공한다는 것이다.
 # 파이썬 패키지의 pytz 모듈을 사용해보자
+# pytz 의 효과적인 사용을 위해서는 지역시간을 utc 로 먼저 변경해야 한다. 그 뒤에 utc 값에 필요한 datetime 연산을 수행하고 필요한 지역시간으로 변환한다
 
 import pytz
 
-arrival_nyc = '2016-05-23 23:24:24'
+print('using pytz...')
+arrival_nyc = '2014-05-01 23:33:24'
 nyc_dt_naive = datetime.strptime(arrival_nyc, time_format)
 eastern = pytz.timezone('US/Eastern')
 nyc_dt = eastern.localize(nyc_dt_naive)
 utc_dt = pytz.utc.normalize(nyc_dt.astimezone(pytz.utc))
-print(utc_dt)
+print(utc_dt) # utc time 을 얻는다
 
 
 pacific = pytz.timezone('US/Pacific')
 sf_dt = pacific.normalize(utc_dt.astimezone(pacific))
-print(sf_dt)
+print(sf_dt) # 필요한 시간대로 변경
 
 
 nepal = pytz.timezone('Asia/Katmandu')
@@ -56,7 +58,5 @@ print(nepal_dt)
 nepal = pytz.timezone('Asia/Seoul')
 nepal_dt = nepal.normalize(utc_dt.astimezone(nepal))
 print(nepal_dt)
-
-
 
 
